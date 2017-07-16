@@ -47,7 +47,7 @@ cleandataset:{[tf]
     / Re-append non-categorical columns
     ds::ds,'flip remCols ! ds[remCols];
 
-    / Set the correct cleaned up datased
+    / Create a alias to cleaned up datased
     $[tf like "train"; train::ds; test::ds]
     
     };
