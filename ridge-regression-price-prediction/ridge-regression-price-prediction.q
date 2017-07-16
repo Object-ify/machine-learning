@@ -1,6 +1,6 @@
 / Ridge, L2 regression
 ridgeregression:{[f;op;tl;s;counter]niter {
-    w::w-s*((2*(flip f)$((f$w)-op))+(2*l2_p*w))}\counter;
+    w::w-s*((2*(flip f)$((f$w)-op))+(2*l2_p*w))} \ counter;
     };
 
 / Clean the dataset.
@@ -23,7 +23,7 @@ cleandataset:{[tf]
     / Remove all non-cat columns from list, 
     / so we're sending only cats to one-hot
     tmp:cols ds;
-    tmp:tmp[where not  tmp in\: remCols];
+    tmp:tmp[where not tmp in\: remCols];
 
     / Find all categorical columns with NAs, 
     / remove NAs and create a dict with distinct values in each column
