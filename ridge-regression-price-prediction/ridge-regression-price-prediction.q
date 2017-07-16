@@ -7,7 +7,7 @@ ridgeregression:{[f;op;tl;s;counter]niter {
 cleandataset:{[tf]
     ds::delete Id from ds;
     
-    / change 1stFlrSF and 2ndFlrSF to q-type variables
+    / Change 1stFlrSF and 2ndFlrSF to q-type variables
     t:key ft:flip ds;
     t[where t=`1stFlrSF]:`FstFlrSF;
     t[where t=`2ndFlrSF]:`SndFlrSF;
@@ -52,17 +52,13 @@ cleandataset:{[tf]
     
     };
 
-
 / Columns names
-c:`Id`MSSubClass`MSZoning`LotFrontage`LotArea`Street`Alley`LotShape`LandContour`Utilities`LotConfig`LandSlope`Neighborhood`Condition1`Condition2`BldgType`HouseStyle`OverallQual`OverallCond`YearBuilt`YearRemodAdd`RoofStyle`RoofMatl`Exterior1st`Exterior2nd`MasVnrType`MasVnrArea`ExterQual`ExterCond`Foundation`BsmtQual`BsmtCond`BsmtExposure`BsmtFinType1`BsmtFinSF1`BsmtFinType2`BsmtFinSF2`BsmtUnfSF`TotalBsmtSF`Heating`HeatingQC`CentralAir`Electrical`1stFlrSF`2ndFlrSF`LowQualFinSF`GrLivArea`BsmtFullBath`BsmtHalfBath`FullBath`HalfBath`BedroomAbvGr`KitchenAbvGr`KitchenQual`TotRmsAbvGrd`Functional`Fireplaces`FireplaceQu`GarageType`GarageYrBlt`GarageFinish`GarageCars`GarageArea`GarageQual`GarageCond`PavedDrive`WoodDeckSF`OpenPorchSF`EnclosedPorch`3SsnPorch`ScreenPorch`PoolArea`PoolQC`Fence`MiscFeature`MiscVal`MoSold`YrSold`SaleType`SaleCondition`SalePrice;
-
-/ Columns type
+colnames:`Id`MSSubClass`MSZoning`LotFrontage`LotArea`Street`Alley`LotShape`LandContour`Utilities`LotConfig`LandSlope`Neighborhood`Condition1`Condition2`BldgType`HouseStyle`OverallQual`OverallCond`YearBuilt`YearRemodAdd`RoofStyle`RoofMatl`Exterior1st`Exterior2nd`MasVnrType`MasVnrArea`ExterQual`ExterCond`Foundation`BsmtQual`BsmtCond`BsmtExposure`BsmtFinType1`BsmtFinSF1`BsmtFinType2`BsmtFinSF2`BsmtUnfSF`TotalBsmtSF`Heating`HeatingQC`CentralAir`Electrical`1stFlrSF`2ndFlrSF`LowQualFinSF`GrLivArea`BsmtFullBath`BsmtHalfBath`FullBath`HalfBath`BedroomAbvGr`KitchenAbvGr`KitchenQual`TotRmsAbvGrd`Functional`Fireplaces`FireplaceQu`GarageType`GarageYrBlt`GarageFinish`GarageCars`GarageArea`GarageQual`GarageCond`PavedDrive`WoodDeckSF`OpenPorchSF`EnclosedPorch`3SsnPorch`ScreenPorch`PoolArea`PoolQC`Fence`MiscFeature`MiscVal`MoSold`YrSold`SaleType`SaleCondition`SalePrice;
 colstr:"SSSSISSSSSSSSSSSSSSIISSSSSISSSSSSSISIIISSSSIIIIIIIIIISISISSISIISSSIIIIIISSSIIISS";
 
 / Read train data set from disk
 colstrt:colstr,"I";
-show colstrt;
-.Q.fs[{`train insert flip c!(colstrt;",")0:x}]`:train.csv;
+.Q.fs[{`train insert flip colnames!(colstrt;",")0:x}]`:train.csv;
 
 / Skip header row
 ds:train[1+til (-1+count train)];
@@ -71,7 +67,6 @@ cleandataset["train"];
 / Show the cleaned dataset
 show "Train cleaned up dataset";
 show train;
-
 
 / Start training regression model
 train:([]
@@ -94,8 +89,8 @@ trainmodel:{[]
     };
  
 / Process test data
-c:c[where c <>`SalePrice];
-.Q.fs[{`test insert flip c!(colstr;",")0:x}]`:test.csv;
+colnames:colnames[where colnames <>`SalePrice];
+.Q.fs[{`test insert flip colnames!(colstr;",")0:x}]`:test.csv;
 ds:test[1+til(-1+count test)]; 
 
 / Skip hearder row
