@@ -1,6 +1,6 @@
-/ Ridge, l2 regression
+/ Ridge l2 regression
 ridgeregression:{[f; op; tl; s; counter]niter {
-    w::w - s * ((2 * (flip f)$((f$w)-op)) + (2 * l2_p * w))} \ counter;
+    w::w - s * ((2 * (flip f)$((f$w) - op)) + (2 * l2_p * w))} \ counter;
     };
 
 / Clean the dataset.
@@ -8,7 +8,7 @@ ridgeregression:{[f; op; tl; s; counter]niter {
 cleandataset:{[datasettype]
     dataset::delete Id from dataset;
     
-    / Change 1stFlrSF and 2ndFlrSF to q-type variables
+    / Change 1stFlrSF, 2ndFlrSF, and 3SsnPorch to q-type variables
     t:key ft:flip dataset;
     t[where t=`1stFlrSF]:`FstFlrSF;
     t[where t=`2ndFlrSF]:`SndFlrSF;
@@ -16,15 +16,15 @@ cleandataset:{[datasettype]
     dataset::flip t!value ft;
 
     / Non-categorical columns, not to be passed for one-hot encoding
-    remCols:`YearBuilt`YearRemodAdd`LotArea`MasVnrArea`BsmtFinSF1`BsmtFinSF2`BsmtUnfSF`TotalBsmtSF`FstFlrSF`SndFlrSF`LowQualFinSF`GrLivArea`BsmtFullBath`BsmtHalfBath`FullBath`HalfBath`BedroomAbvGr`KitchenAbvGr`TotRmsAbvGrd`Fireplaces`GarageYrBlt`GarageCars`GarageArea`WoodDeckSF`OpenPorchSF`EnclosedPorch`ThreeSnPorch`ScreenPorch`PoolArea`MiscVal`MoSold`YrSold`SalePrice;
+    tokencolumns:`YearBuilt`YearRemodAdd`LotArea`MasVnrArea`BsmtFinSF1`BsmtFinSF2`BsmtUnfSF`TotalBsmtSF`FstFlrSF`SndFlrSF`LowQualFinSF`GrLivArea`BsmtFullBath`BsmtHalfBath`FullBath`HalfBath`BedroomAbvGr`KitchenAbvGr`TotRmsAbvGrd`Fireplaces`GarageYrBlt`GarageCars`GarageArea`WoodDeckSF`OpenPorchSF`EnclosedPorch`ThreeSnPorch`ScreenPorch`PoolArea`MiscVal`MoSold`YrSold`SalePrice;
     
     / If it is test dataset remove the SalePrice column
-    if[datasettype like "test";remCols:remCols[where remCols<>`SalePrice]];
+    if[datasettype like "test";tokencolumns:tokencolumns[where tokencolumns<>`SalePrice]];
     
     / Remove all non-cat columns from list, 
     / so we're sending only cats to one-hot
     tmp:cols dataset;
-    tmp:tmp[where not tmp in\: remCols];
+    tmp:tmp[where not tmp in\: tokencolumns];
 
     / Find all categorical columns with NAs, 
     / remove NAs and create a dict with distinct values in each column
@@ -46,7 +46,7 @@ cleandataset:{[datasettype]
     dataset::![dataset;();0b;tmp];
 
     / Re-append non-categorical columns
-    dataset::dataset,'flip remCols ! dataset[remCols];
+    dataset::dataset,'flip tokencolumns ! dataset[tokencolumns];
 
     / Create a alias to cleaned up datased
     $[datasettype like "train"; train::dataset; test::dataset]
