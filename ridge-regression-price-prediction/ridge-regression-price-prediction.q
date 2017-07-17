@@ -92,7 +92,9 @@ columnstypemaskt:columnstypemask,"I";
 .Q.fs[{`train insert flip columns!(columnstypemaskt;",")0:x}]`:train.csv;
 
 / Skip header row
-dataset:train[1+til (-1 + count train)];
+dataset:train[1 + til (-1 + count train)];
+
+/ Clean the dataset
 cleandataset["train"];
 
 / Show the cleaned dataset
