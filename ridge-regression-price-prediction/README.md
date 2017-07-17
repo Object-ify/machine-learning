@@ -1,4 +1,4 @@
-#### It's a small piece of code written in Q using ridge prediction statistical technique for house price prediction:
+#### It's a small piece of code written in Q using ridge prediction statistical technique for house price prediction.
 
 * [Source code](https://github.com/t4joel/machine-learning/blob/master/ridge-regression-price-prediction/ridge-regression-price-prediction.q)
 
