@@ -1,6 +1,6 @@
 / Ridge, L2 regression
 ridgeregression:{[f;op;tl;s;counter]niter {
-    w::w-s*((2*(flip f)$((f$w)-op))+(2*l2_p*w))} \ counter;
+    w::w-s * ((2 * (flip f)$((f$w)-op)) + (2 * l2_p * w))} \ counter;
     };
 
 / Clean the dataset.
@@ -91,7 +91,7 @@ trainmodel:{[]
 / Process test data
 colnames:colnames[where colnames <>`SalePrice];
 .Q.fs[{`test insert flip colnames!(colstr;",")0:x}]`:test.csv;
-ds:test[1+til(-1+count test)]; 
+ds:test[1 + til(-1 + count test)]; 
 
 / Skip hearder row
 testId:test[1+til(-1+count test)][`Id];
