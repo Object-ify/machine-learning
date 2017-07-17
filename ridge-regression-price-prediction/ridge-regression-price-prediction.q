@@ -1,6 +1,6 @@
-/ Ridge, L2 regression
+/ Ridge, l2 regression
 ridgeregression:{[f;op;tl;s;counter]niter {
-    w::w-s * ((2 * (flip f)$((f$w)-op)) + (2 * l2_p * w))} \ counter;
+    w::w - s * ((2 * (flip f)$((f$w)-op)) + (2 * l2_p * w))} \ counter;
     };
 
 / Clean the dataset.
@@ -52,32 +52,7 @@ cleandataset:{[tf]
     
     };
 
-/ Columns names
-colnames:`Id`MSSubClass`MSZoning`LotFrontage`LotArea`Street`Alley`LotShape`LandContour`Utilities`LotConfig`LandSlope`Neighborhood`Condition1`Condition2`BldgType`HouseStyle`OverallQual`OverallCond`YearBuilt`YearRemodAdd`RoofStyle`RoofMatl`Exterior1st`Exterior2nd`MasVnrType`MasVnrArea`ExterQual`ExterCond`Foundation`BsmtQual`BsmtCond`BsmtExposure`BsmtFinType1`BsmtFinSF1`BsmtFinType2`BsmtFinSF2`BsmtUnfSF`TotalBsmtSF`Heating`HeatingQC`CentralAir`Electrical`1stFlrSF`2ndFlrSF`LowQualFinSF`GrLivArea`BsmtFullBath`BsmtHalfBath`FullBath`HalfBath`BedroomAbvGr`KitchenAbvGr`KitchenQual`TotRmsAbvGrd`Functional`Fireplaces`FireplaceQu`GarageType`GarageYrBlt`GarageFinish`GarageCars`GarageArea`GarageQual`GarageCond`PavedDrive`WoodDeckSF`OpenPorchSF`EnclosedPorch`3SsnPorch`ScreenPorch`PoolArea`PoolQC`Fence`MiscFeature`MiscVal`MoSold`YrSold`SaleType`SaleCondition`SalePrice;
-colstr:"SSSSISSSSSSSSSSSSSSIISSSSSISSSSSSSISIIISSSSIIIIIIIIIISISISSISIISSSIIIIIISSSIIISS";
-
-/ Read train data set from disk
-colstrt:colstr,"I";
-.Q.fs[{`train insert flip colnames!(colstrt;",")0:x}]`:train.csv;
-
-/ Skip header row
-ds:train[1+til (-1+count train)];
-cleandataset["train"];
-
-/ Show the cleaned dataset
-show "Train cleaned up dataset";
-show train;
-
-/ Start training regression model
-train:([]
-    intercept:(count train)#1.0),'train
-cls:cols train;
-    f:flip 0^"f"$train[cls[where (cls<>`SalePrice)]
-    ];
-
-w:"f"$((count f[0]),1)#(10000),(-1+count f[0])#0.0;
-op:0^"f"$train[`SalePrice];
-
+/ Train model function
 trainmodel:{[]
     tl:"f"$1.0e+009;
     s::"f"$1.0e-12;
@@ -87,6 +62,46 @@ trainmodel:{[]
     show "Calling ridge regression";
     ridgeregression[f;op;tl;s;counter];
     };
+
+/ Run regression model with trained weights on test data
+finaloutput:{[]
+    test::([]intercept:(count test)#1.0),'test;
+    l:cols train;
+    k:raze where each l =/: cols test;
+    cls:l[k];
+    wts:w[k];
+    h:((count cls),1)# raze over (cls!wts)@cls;
+    f:flip 0f^/:"f"$test[cls];
+    o:f$h;
+    show "Outputs :";
+    show op:([]Id:testId;SalePrice:o);
+    };
+
+/ Columns names
+colnames:`Id`MSSubClass`MSZoning`LotFrontage`LotArea`Street`Alley`LotShape`LandContour`Utilities`LotConfig`LandSlope`Neighborhood`Condition1`Condition2`BldgType`HouseStyle`OverallQual`OverallCond`YearBuilt`YearRemodAdd`RoofStyle`RoofMatl`Exterior1st`Exterior2nd`MasVnrType`MasVnrArea`ExterQual`ExterCond`Foundation`BsmtQual`BsmtCond`BsmtExposure`BsmtFinType1`BsmtFinSF1`BsmtFinType2`BsmtFinSF2`BsmtUnfSF`TotalBsmtSF`Heating`HeatingQC`CentralAir`Electrical`1stFlrSF`2ndFlrSF`LowQualFinSF`GrLivArea`BsmtFullBath`BsmtHalfBath`FullBath`HalfBath`BedroomAbvGr`KitchenAbvGr`KitchenQual`TotRmsAbvGrd`Functional`Fireplaces`FireplaceQu`GarageType`GarageYrBlt`GarageFinish`GarageCars`GarageArea`GarageQual`GarageCond`PavedDrive`WoodDeckSF`OpenPorchSF`EnclosedPorch`3SsnPorch`ScreenPorch`PoolArea`PoolQC`Fence`MiscFeature`MiscVal`MoSold`YrSold`SaleType`SaleCondition`SalePrice;
+colstr:"SSSSISSSSSSSSSSSSSSIISSSSSISSSSSSSISIIISSSSIIIIIIIIIISISISSISIISSSIIIIIISSSIIISS";
+
+/ Read train data set from disk
+colstrt:colstr,"I";
+.Q.fs[{`train insert flip colnames!(colstrt;",")0:x}]`:train.csv;
+
+/ Skip header row
+ds:train[1+til (-1 + count train)];
+cleandataset["train"];
+
+/ Show the cleaned dataset
+show "Train cleaned up dataset";
+show train;
+
+/ Start training regression model
+train:([]
+    intercept:(count train)#1.0),'train;
+    cls:cols train;
+    f:flip 0^"f"$train[cls[where (cls<>`SalePrice)]
+    ];
+
+w:"f"$((count f[0]),1)#(10000),(-1+count f[0])#0.0;
+op:0^"f"$train[`SalePrice];
  
 / Process test data
 colnames:colnames[where colnames <>`SalePrice];
@@ -100,19 +115,6 @@ cleandataset["test"];
 / Show the cleaned dataset
 show "Test cleaned up dataset";
 show test;
-
-/ Run regression model with trained weights on test data
-finaloutput:{[]
-    test::([]intercept:(count test)#1.0),'test;
-    l:cols train;k:raze where each l =/: cols test;
-    cls:l[k];
-    wts:w[k];
-    h:((count cls),1)# raze over (cls!wts)@cls;
-    f:flip 0f^/:"f"$test[cls];
-    o:f$h;
-    show "Outputs :";
-    show op:([]Id:testId;SalePrice:o);
-    };
 
 trainmodel[]; 
 finaloutput[];
