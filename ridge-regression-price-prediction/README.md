@@ -9,3 +9,5 @@
 * [http://code.kx.com](http://code.kx.com/q/)
 
 * [Q for Mortals](http://code.kx.com/q4m3/)
+
+* [Basic Linear Algebra in q](http://jpneill.github.io/posts/Lin_Alg_q.html)
