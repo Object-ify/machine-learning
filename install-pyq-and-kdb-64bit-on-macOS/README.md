@@ -1,4 +1,4 @@
-#### Install pyq with kdb 64bit on MacOS
+#### Install pyq with kdb 64bit on MacOS 64bit
 
 
 If you need to run the pyq library with kdb 64 bit on Mac OS, you have to follow these steps:
