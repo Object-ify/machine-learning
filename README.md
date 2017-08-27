@@ -1,2 +1,2 @@
 # machine-learning
-Machine learning stuff
+Machine learning
