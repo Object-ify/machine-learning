@@ -15,7 +15,7 @@
 #	Revision History
 #
 #	Date		Author				Description
-#	-------		------------------	---------------------------------
+#	-------		------------------	-------------------------------
 #	15Aug17		Joel Oliveira		Original version
 
 from pyq import q
