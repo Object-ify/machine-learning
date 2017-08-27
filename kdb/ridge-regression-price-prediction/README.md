@@ -16,4 +16,4 @@
 
 #### Results:
 
-![Results](https://github.com/t4joel/machine-learning/blob/master/ridge-regression-price-prediction/results.png)
+![Results](https://github.com/t4joel/machine-learning/blob/master/kdb/ridge-regression-price-prediction/results.png)
