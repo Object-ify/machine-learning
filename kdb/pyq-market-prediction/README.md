@@ -4,3 +4,7 @@ For this example, we are using machine learning to predict about one-month price
 
 * [Source code](https://github.com/t4joel/machine-learning/blob/master/kdb/pyq-market-prediction/pyq-stock-market-prediction.py)
 
+#### Results:
+
+![Results](https://github.com/t4joel/machine-learning/blob/master/kdb/pyq-market-prediction/results.png)
+
