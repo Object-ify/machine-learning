@@ -1,6 +1,6 @@
 #### This is a machine learning code written in Q using Ridge Regression statistical technique for house price prediction over Boston house-prices dataset.
 
-* [Source code](https://github.com/t4joel/machine-learning/blob/master/ridge-regression-price-prediction/ridge-regression-price-prediction.q)
+* [Source code](https://github.com/t4joel/machine-learning/blob/master/kdb/ridge-regression-price-prediction/main.q)
 
 #### Find out more:
 
