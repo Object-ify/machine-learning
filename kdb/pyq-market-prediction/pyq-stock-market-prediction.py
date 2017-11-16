@@ -71,7 +71,7 @@ print("Forecast: ", forecast_out)
 # Create a new label to get the historical data for training.
 dataFrame["label"] = dataFrame["Adj_Close"].shift(-forecast_out)
 
-# Create a mew arruy with the data - label column
+# Create a mew array with the data - label column
 X = np.array(dataFrame.drop(["label"], 1))
 
 # Standardize a dataset along any axis
